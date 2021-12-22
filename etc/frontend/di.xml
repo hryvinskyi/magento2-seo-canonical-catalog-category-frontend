@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2021. All rights reserved.
+  ~ @author: Volodymyr Hryvinskyi <mailto:volodymyr@hryvinskyi.com>
+  -->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Hryvinskyi\SeoCanonicalCatalogCategoryFrontend\Model\CanonicalUrlProcess">
+        <arguments>
+            <argument name="actions" xsi:type="array">
+                <item name="catalog_category_view" xsi:type="string">catalog_category_view</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Hryvinskyi\SeoCanonicalFrontend\Model\CanonicalUrlProcessor">
+        <arguments>
+            <argument name="items" xsi:type="array">
+                <item name="category" xsi:type="array">
+                    <item name="object" xsi:type="object">Hryvinskyi\SeoCanonicalCatalogCategoryFrontend\Model\CanonicalUrlProcess</item>
+                    <item name="sortOrder" xsi:type="number">200</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>
