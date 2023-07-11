@@ -12,6 +12,7 @@ use Hryvinskyi\SeoCanonicalFrontend\Model\AbstractCanonicalUrlProcess;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Framework\App\HttpRequestInterface;
 use Magento\Framework\Registry;
+use Magento\Framework\UrlInterface;
 
 class CanonicalUrlProcess extends AbstractCanonicalUrlProcess
 {
@@ -26,6 +27,11 @@ class CanonicalUrlProcess extends AbstractCanonicalUrlProcess
     private $categoryRepository;
 
     /**
+     * @var UrlInterface
+     */
+    private $url;
+
+    /**
      * @param Registry $registry
      * @param CategoryRepositoryInterface $categoryRepository
      * @param array $actions
@@ -33,11 +39,14 @@ class CanonicalUrlProcess extends AbstractCanonicalUrlProcess
     public function __construct(
         Registry $registry,
         CategoryRepositoryInterface $categoryRepository,
-        array $actions = []
+        array $actions = [],
+        UrlInterface $url = null
     ) {
         parent::__construct($actions);
+
         $this->registry = $registry;
         $this->categoryRepository = $categoryRepository;
+        $this->url = $url ?: \Magento\Framework\App\ObjectManager::getInstance()->get(UrlInterface::class);
     }
 
     /**
@@ -51,6 +60,10 @@ class CanonicalUrlProcess extends AbstractCanonicalUrlProcess
         }
         // Need load because amasty shopby-seo module change registry category
         $category = $this->categoryRepository->get($category->getId());
+
+        if ($customCanonical = $category->getData('custom_canonical_url')) {
+            return rtrim($this->url->getBaseUrl(),  '/') . '/' . ltrim($customCanonical, '/');
+        }
 
         return $category->getUrl();
     }
