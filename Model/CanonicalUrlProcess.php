@@ -40,7 +40,7 @@ class CanonicalUrlProcess extends AbstractCanonicalUrlProcess
         Registry $registry,
         CategoryRepositoryInterface $categoryRepository,
         array $actions = [],
-        UrlInterface $url = null
+        ?UrlInterface $url = null
     ) {
         parent::__construct($actions);
 
